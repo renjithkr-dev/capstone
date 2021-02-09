@@ -11,6 +11,7 @@ export interface AppointmentInterface{
 }
 export interface ProviderInterface{
     addAppointment (appt:AppointmentInterface):Promise<AppointmentInterface>
+    getUserAppointments (userId:string,apptDate:string):Promise<AppointmentInterface[]>
 }
 export class AppointmentImpl implements AppointmentInterface{
     appointmentId?: string

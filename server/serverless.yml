@@ -29,6 +29,7 @@ provider:
   environment:
     APPTS_TABLE: appts-${self:provider.stage}
     STAFF_APPTS_INDEX: appts-staff-${self:provider.stage}
+    USER_APPTS_INDEX: appts-user-${self:provider.stage}
 
 # you can overwrite defaults here
 #  stage: dev
@@ -77,8 +78,8 @@ functions:
           method: post
           cors: 
             headers: "*"
-  viewUserAppointments:
-    handler: dist/src/lambda/viewUserAppointments.handler
+  getUserAppointments:
+    handler: dist/src/lambda/getUserAppointments.handler
     events:
       - http:
           path: appointments/user
@@ -86,7 +87,7 @@ functions:
           cors: 
             headers: "*"
   viewStaffAppointments:
-    handler: dist/src/lambda/viewStaffAppointments.handler
+    handler: dist/src/lambda/getStaffAppointments.handler
     events:
       - http:
           path: appointments/staff
@@ -164,6 +165,15 @@ resources:
                 KeyType: HASH
               - AttributeName: apptDate
                 KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+        LocalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.USER_APPTS_INDEX}
+            KeySchema:
+            - AttributeName: userId
+              KeyType: HASH
+            - AttributeName: apptDate
+              KeyType: RANGE
             Projection:
               ProjectionType: ALL
 #    NewResource:

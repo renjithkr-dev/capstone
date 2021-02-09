@@ -1,3 +1,4 @@
+import { string0To1000 } from "aws-sdk/clients/customerprofiles"
 import {AppointmentImpl, AppointmentInterface, ProviderInterface} from "../models/appoinments"
 import { DynamoDBProvider } from "./dynamodbProvider"
 
@@ -21,8 +22,10 @@ export class AppointmentFactory{
             return Promise.reject({"error":e})
         }
     }
-    getUserAppointments=async (userId:string):Promise<AppointmentInterface[]>=>{
-        return Promise.resolve(this.appointments.filter((apt)=>apt.userId===userId));
+    getUserAppointments=async (userId:string,apptDate:string0To1000):Promise<AppointmentInterface[]>=>{
+
+        const appts=await this.dbProvider.getUserAppointments(userId,apptDate)
+        return Promise.resolve(appts);
     }
 
     getStaffAppointments=async (staffId:string):Promise<AppointmentInterface[]>=>{
