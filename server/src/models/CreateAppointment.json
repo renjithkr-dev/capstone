@@ -1,0 +1,26 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "CreateToDo",
+    "description": "Create an appointment item",
+    "type": "object",
+    "properties": {
+       "comments": {
+          "type": "string"
+       },
+       "appointmentDate": {
+          "type": "string",
+          "minLength":8,
+          "format":"date"
+       },
+       "appointmentTime": {
+        "type": "string",
+        "minLength":5
+     },
+     "staffId": {
+      "type": "string"
+   }
+    },
+     
+    "required": ["appointmentDate", "appointmentTime","staffId"],
+    "additionalProperties": false
+ }

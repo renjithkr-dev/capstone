@@ -1,16 +1,18 @@
-import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } from "aws-lambda";
-import {AppointmentFactory} from "../dataaccess/provider"
+import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } from "aws-lambda"
+
 import {logger} from "../util"
+import {AppointmentFactory} from "../dataaccess/provider"
 
 const apptsController=new AppointmentFactory()
 
 export const handler:APIGatewayProxyHandler=async (event:APIGatewayProxyEvent):Promise<APIGatewayProxyResult>=>{
-    const iData:any=JSON.parse(event.body||"")
-    logger.debug(event.body)
+    const apptId=event.pathParameters?.appointmentId
+    const userId="1"
     try{
-      var appt= await apptsController.createAppointment(iData,"1")
-    }catch(e){
-      console.log(e);
+      var resp=await apptsController.deleteAppointment(apptId||"",userId)
+      logger.debug(resp)
+    }
+    catch(e){
       return (
         {
             statusCode: 400,
@@ -29,7 +31,7 @@ export const handler:APIGatewayProxyHandler=async (event:APIGatewayProxyEvent):P
                 "Access-Control-Allow-Origin": "http://localhost:3000",
                 'Access-Control-Allow-Credentials': true
               },
-              body:JSON.stringify(appt)
+              body:JSON.stringify(resp)
         }
     )
 }

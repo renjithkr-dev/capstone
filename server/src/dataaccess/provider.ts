@@ -1,19 +1,19 @@
-import { string0To1000 } from "aws-sdk/clients/customerprofiles"
-import {AppointmentImpl, AppointmentInterface, ProviderInterface} from "../models/appoinments"
+
+import {AppointmentImpl, AppointmentInterface, APPT_STATUS, ProviderInterface} from "../models/appoinments"
 import { DynamoDBProvider } from "./dynamodbProvider"
+import {logger} from "../util"
 
 
 export class AppointmentFactory{
-    appointments:AppointmentInterface[]
     dbProvider:ProviderInterface
     constructor() {
-        this.appointments=[]
         this.dbProvider=new DynamoDBProvider()
     }
     createAppointment=async (data:any,userId:string):Promise<{}>=>{
         const apptData={...data,userId:userId}
+        logger.debug(apptData)
         const apt=new AppointmentImpl(apptData)
-        this.appointments.push(apt)
+        logger.debug(apt)
         try{
             await this.dbProvider.addAppointment(apt)
             return Promise.resolve(apt)
@@ -22,14 +22,22 @@ export class AppointmentFactory{
             return Promise.reject({"error":e})
         }
     }
-    getUserAppointments=async (userId:string,apptDate:string0To1000):Promise<AppointmentInterface[]>=>{
+    getUserAppointments=async (userId:string,apptDate:string):Promise<AppointmentInterface[]>=>{
 
         const appts=await this.dbProvider.getUserAppointments(userId,apptDate)
         return Promise.resolve(appts);
     }
 
-    getStaffAppointments=async (staffId:string):Promise<AppointmentInterface[]>=>{
-        return Promise.resolve(this.appointments.filter((apt)=>apt.staffId===staffId));
+    getStaffAppointments=async (staffId:string,apptDate:string):Promise<AppointmentInterface[]>=>{
+        const appts=await this.dbProvider.getStaffAppointments(staffId,apptDate)
+        return Promise.resolve(appts);
     }
-
+    updateAppointmentStatus=async(apptId:string,apptStatus:APPT_STATUS,userId:string):Promise<AppointmentInterface> =>{
+        const appts=await this.dbProvider.updateAppointmentStatus(apptId,apptStatus,userId)
+        return Promise.resolve(appts);
+    }
+    deleteAppointment=async (apptId:string,userId:string):Promise<any>=>{
+        const resp=await this.dbProvider.deleteAppointment(apptId,userId)
+        return Promise.resolve(resp)
+    }
 }
