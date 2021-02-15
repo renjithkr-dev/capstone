@@ -1,0 +1,2 @@
+GET https://gf8qt3l6di.execute-api.us-east-1.amazonaws.com/dev/appointments/user/2021-02-25
+
