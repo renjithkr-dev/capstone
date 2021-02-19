@@ -1,16 +1,30 @@
-import {useAuth0 as UseAuth0} from '@auth0/auth0-react';
-import { useEffect } from 'react';
-export const getUserAppointments=async()=>{
-    const {getAccessTokenSilently}=UseAuth0()
-    useEffect(()=>{
-        try {
-            const accessToken=await getAccessTokenSilently({
-                audience:process.env.REACT_APP_AUTH0_AUDIENCE
-            })
-            
-            console.log(accessToken)
-        } catch (error) {
-            console.error(error)
-        }
-    },[])
+import axios from 'axios'
+const GETAPI=async(url,options)=>{
+    try {
+        
+        const data=await axios.get(url,{
+            headers:{
+                Authorization:`bearer ${options.accessToken}`
+            }
+        })
+        console.log(data)
+        return Promise.resolve(data);
+    } catch (error) {
+        console.error(error)
+        return Promise.reject(error)
+    }
 }
+ export const getUserAppointmentsForDate=async(appointmentDate,options)=>{
+    try {
+        const data=await GETAPI(`/appointments/user/${appointmentDate}`,options)
+        return Promise.resolve(data)
+    } catch (error) {
+        console.error(error)
+        return Promise.reject(error)
+    }
+
+}
+
+
+
+
