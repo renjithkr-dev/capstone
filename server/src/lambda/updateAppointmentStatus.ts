@@ -6,7 +6,7 @@ import {AppointmentFactory} from "../dataaccess/provider"
 const apptsController=new AppointmentFactory()
 
 export const handler:APIGatewayProxyHandler=async (event:APIGatewayProxyEvent):Promise<APIGatewayProxyResult>=>{
-  if (!(validateUserPermissions(event,["read:user-appointments"]).status=="OK")) {
+  if ((validateUserPermissions(event,["update:staff-appointments"]).status!="OK")|| (validateUserPermissions(event,["update:staff-appointments"]).type!=="STAFF")) {
     return (
       {
         statusCode: 401,

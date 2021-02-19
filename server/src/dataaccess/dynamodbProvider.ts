@@ -67,7 +67,7 @@ export class DynamoDBProvider implements ProviderInterface {
     }
 
     getStaffAppointments=async (staffId:string,apptDate:string):Promise<AppointmentInterface[]> =>{
-        const condition=apptDate!=""?"userId=:id and appointmentDate= :apptDate":"userId=:id"
+        const condition=apptDate!=""?"staffId=:id and appointmentDate= :apptDate":"staffId=:id"
         const expAttrib=apptDate!=""?{
             ":id":staffId,
             ":apptDate":apptDate
