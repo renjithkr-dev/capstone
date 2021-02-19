@@ -8,7 +8,7 @@ import React,{useEffect as UseEffect} from 'react'
             const accessToken=await getAccessTokenSilently({
                 audience:process.env.REACT_APP_AUTH0_AUDIENCE
             })
-            const data=await fetch('https://gf8qt3l6di.execute-api.us-east-1.amazonaws.com/dev/appointments/user/2021-02-25',{
+            const data=await fetch('https://reumgbrqwd.execute-api.us-east-1.amazonaws.com/dev/appointments/user/2021-02-25',{
                 headers:{
                     Authorization:`bearer ${accessToken}`
                 }

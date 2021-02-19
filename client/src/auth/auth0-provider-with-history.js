@@ -20,6 +20,7 @@ const Auth0ProviderWithHistory = ({ children }) => {
       redirectUri= 'http://localhost:3000/dashboard'//{window.location.origin}
       onRedirectCallback={onRedirectCallback}
       audience={audience}
+      scope="openid profile email http://capstone.com/claims/loginsCount"
     >
       {children}
     </Auth0Provider>
