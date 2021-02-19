@@ -3,7 +3,7 @@ import { Staff } from "../models/Staff";
 import { validateUserPermissions } from "../util";
 
 export const handler:APIGatewayProxyHandler=async (event:APIGatewayProxyEvent):Promise<APIGatewayProxyResult>=>{
-    if (!(validateUserPermissions(event,["read:user-appointments"]).status==="OK")) {
+    if ((validateUserPermissions(event,["read:user-appointments"]).status!="OK")) {
         return (
           {
             statusCode: 401,
