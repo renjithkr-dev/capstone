@@ -25,6 +25,20 @@ const GETAPI=async(url,options)=>{
 
 }
 
+export const deleteUserAppointment=async(apptId,options)=>{
+    try {
+        const data=await axios.delete(`appointments/delete/${apptId}`,{
+            headers:{
+                Authorization:`bearer ${options.accessToken}`
+            }
+        })
+        return Promise.resolve(data)
+    } catch (error) {
+        console.error(error)
+        return Promise.reject(error)
+    }
+}
+
 
 
 

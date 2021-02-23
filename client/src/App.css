@@ -1,0 +1,14 @@
+.dashboard{
+    text-align: center;
+}
+.appointments-holder{
+    margin-left: auto;
+    margin-right: auto;
+    border:solid 2px;
+    text-align: left;
+    width: max-content;
+}
+
+.apptItem {
+    margin: 10px;;
+}
