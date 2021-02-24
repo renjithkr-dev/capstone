@@ -60,6 +60,15 @@ functions:
       Action:
         - secretsmanager:GetSecretValue
       Resource: !Ref Auth0Secret
+  getStaffDetails:
+    handler: dist/src/lambda/getStaffDetails.handler
+    events:
+      - http:
+          path: staff
+          method: get
+          cors: 
+            headers: "*"
+          authorizer: Auth
   createAppointment:
     handler: dist/src/lambda/createAppointment.handler
     iamRoleStatements:

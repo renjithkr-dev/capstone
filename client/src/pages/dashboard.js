@@ -1,4 +1,4 @@
-import React, { useEffect as UseEffect, useState, useState as UseState } from 'react'
+import React, { useEffect as UseEffect, useState as UseState } from 'react'
 import { getUserAppointmentsForDate, deleteUserAppointment } from '../apis/callApi'
 import { useAuth0 as UseAuth0 } from '@auth0/auth0-react';
 import { AppointmentItem } from '../components/apptComponent'

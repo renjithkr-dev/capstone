@@ -7,7 +7,6 @@ const GETAPI=async(url,options)=>{
                 Authorization:`bearer ${options.accessToken}`
             }
         })
-        console.log(data)
         return Promise.resolve(data);
     } catch (error) {
         console.error(error)
@@ -35,6 +34,31 @@ export const deleteUserAppointment=async(apptId,options)=>{
         return Promise.resolve(data)
     } catch (error) {
         console.error(error)
+        return Promise.reject(error)
+    }
+}
+export const getStaffList=async(options)=>{
+    try {
+        const data=await GETAPI(`/staff/`,options)
+        return Promise.resolve(data.data.data)
+    } catch (error) {
+        console.error(error)
+        return Promise.reject(error)
+    }
+
+}
+
+export const addAppointment=async(appt,options)=>{
+    try {
+        const data=await axios.post('/appointments/user/create',appt,{
+            headers:{
+                Authorization:`bearer ${options.accessToken}`,
+                'Content-Type':'application/json'
+            }
+        })
+        return Promise.resolve(data)
+    } catch (error) {
+        console.log(error)
         return Promise.reject(error)
     }
 }
