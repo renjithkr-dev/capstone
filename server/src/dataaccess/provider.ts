@@ -33,8 +33,12 @@ export class AppointmentFactory{
         return Promise.resolve(appts);
     }
     updateAppointmentStatus=async(apptId:string,apptStatus:APPT_STATUS,userId:string):Promise<AppointmentInterface> =>{
+        try{
         const appts=await this.dbProvider.updateAppointmentStatus(apptId,apptStatus,userId)
         return Promise.resolve(appts);
+        }catch(e){
+            return Promise.reject({"error":e})
+        }
     }
     deleteAppointment=async (apptId:string,userId:string):Promise<any>=>{
         const resp=await this.dbProvider.deleteAppointment(apptId,userId)

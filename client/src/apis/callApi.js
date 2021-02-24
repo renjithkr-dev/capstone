@@ -62,7 +62,31 @@ export const addAppointment=async(appt,options)=>{
         return Promise.reject(error)
     }
 }
+export const getStaffAppointments=async(appointmentDate,options)=>{
+    try {
+        const data=await GETAPI(`/appointments/staff/${appointmentDate}`,options)
+        return Promise.resolve(data)
+    } catch (error) {
+        console.error(error)
+        return Promise.reject(error)
+    }
 
+}
+export const updateStaffAppointments=async(appt,options)=>{
+    try {
+        const data=await axios.patch(`/appointments/update`,appt,{
+            headers:{
+                Authorization:`bearer ${options.accessToken}`,
+                'Content-Type':'application/json'
+            }
+        })
+        return Promise.resolve(data)
+    } catch (error) {
+        console.error(error)
+        return Promise.reject(error)
+    }
+
+}
 
 
 

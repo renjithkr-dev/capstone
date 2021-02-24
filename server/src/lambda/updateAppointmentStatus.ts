@@ -17,13 +17,23 @@ export const handler:APIGatewayProxyHandler=async (event:APIGatewayProxyEvent):P
         body: JSON.stringify({ message: "User not authorized" })
       })
   }
+  try{
     const data=JSON.parse(event.body|| "")
     const apptId=data.appointmentId
     const apptStatus=data.appointmentStatus
-    const userId=event.requestContext.authorizer?.principalId
-    try{
+    const userId=data.userId
       var appt=await apptsController.updateAppointmentStatus(apptId,apptStatus,userId)
       logger.debug(appt)
+      return (
+        {
+            statusCode: 200,
+              headers: {
+                "Access-Control-Allow-Origin": "http://localhost:3000",
+                'Access-Control-Allow-Credentials': true
+              },
+              body:JSON.stringify(appt)
+        }
+    )
     }
     catch(e){
       return (
@@ -37,14 +47,5 @@ export const handler:APIGatewayProxyHandler=async (event:APIGatewayProxyEvent):P
         }
     )
     }
-    return (
-        {
-            statusCode: 200,
-              headers: {
-                "Access-Control-Allow-Origin": "http://localhost:3000",
-                'Access-Control-Allow-Credentials': true
-              },
-              body:JSON.stringify(appt)
-        }
-    )
+    
 }
