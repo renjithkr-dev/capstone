@@ -2,6 +2,9 @@ service: capstone
 frameworkVersion: '2'
 plugins:
   - serverless-iam-roles-per-function
+tracing:
+  lambda: true
+  apiGateway: true
 provider:
   name: aws
   runtime: nodejs12.x

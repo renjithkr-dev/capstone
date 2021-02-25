@@ -2,6 +2,7 @@ import React, { useEffect as UseEffect, useState as UseState } from 'react'
 import { getStaffAppointments, updateStaffAppointments } from '../apis/callApi'
 import { useAuth0 as UseAuth0 } from '@auth0/auth0-react';
 import { StaffAppointmentItem } from '../components/staffAppointmentItem'
+import {getTodayString} from '../util'
 
 export const StaffDashboard = () => {
     const [apptData, setAppData] = UseState([])
@@ -15,7 +16,7 @@ export const StaffDashboard = () => {
             const accessToken = await getAccessTokenSilently({
                 audience: process.env.REACT_APP_AUTH0_AUDIENCE
             })
-            let data = await getStaffAppointments('2021-02-29', { "accessToken": accessToken })
+            let data = await getStaffAppointments(getTodayString(), { "accessToken": accessToken })
             console.log(data)
             setAppData(data.data)
         } catch (e) {

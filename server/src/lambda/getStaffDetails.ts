@@ -17,17 +17,17 @@ export const handler:APIGatewayProxyHandler=async (event:APIGatewayProxyEvent):P
     const staff:Staff[]=[
         {
             StaffId:"602966e6c8851c006901d02c",
-            StaffName:"John Doe",
+            StaffName:"Staff1",
             Department:"Sales"
         },
         {
             StaffId:"602f443866abcd006913e2b9",
-            StaffName:"Angie Jol",
+            StaffName:"Staff2",
             Department:"Support"
         },
         {
             StaffId:"602f445faf50460069626375",
-            StaffName:"Sil Stal",
+            StaffName:"Staff3",
             Department:"R&D"
         }
     ];

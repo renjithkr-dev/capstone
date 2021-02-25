@@ -1,10 +1,12 @@
 import React, { useEffect as UseEffect, useState as UseState } from 'react'
-import { getUserAppointmentsForDate, deleteUserAppointment } from '../apis/callApi'
+import { getUserAppointmentsForDate, deleteUserAppointment,getStaffList } from '../apis/callApi'
 import { useAuth0 as UseAuth0 } from '@auth0/auth0-react';
 import { AppointmentItem } from '../components/apptComponent'
+import {getTodayString} from '../util'
 
 const dashboard = () => {
     const [apptData, setAppData] = UseState([])
+    const [staffList,setStaffList]=UseState({data:[]})
     const { getAccessTokenSilently } = UseAuth0()
     const [deleteOperationRunning,setDeleteOperationRunning]=UseState(false)
 
@@ -33,14 +35,18 @@ const dashboard = () => {
             const accessToken = await getAccessTokenSilently({
                 audience: process.env.REACT_APP_AUTH0_AUDIENCE
             })
-            let data = await getUserAppointmentsForDate('2021-02-29', { "accessToken": accessToken })
+            const staffdata = await getStaffList( { "accessToken": accessToken })
+            console.log(staffdata)
+            setStaffList({data:staffdata})
+            let data = await getUserAppointmentsForDate(getTodayString(), { "accessToken": accessToken })
             setAppData(data.data)
         } catch (e) {
             console.error(e)
         }
     },[])
     const apptList = apptData.map(el => {
-        return <AppointmentItem item={el} key={el.appointmentId} deleteAppointmentListener={deleteAppointmentListener} status={{deleteRunning:deleteOperationRunning}}/>
+        const st=staffList.data.find(stel=>stel.StaffId===el.staffId)
+        return <AppointmentItem item={el} staffName={st?.StaffName} key={el.appointmentId} deleteAppointmentListener={deleteAppointmentListener} status={{deleteRunning:deleteOperationRunning}}/>
     })
     return (
         <div className='dashboard'>
