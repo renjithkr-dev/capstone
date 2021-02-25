@@ -88,5 +88,37 @@ export const updateStaffAppointments=async(appt,options)=>{
 
 }
 
+export const getUploadURL=async(fileObj,options)=>{
+    try {
+        const data=await axios.post(`/appointments/getUploadUrl`,{"fileName":fileObj.name},{
+            headers:{
+                Authorization:`bearer ${options.accessToken}`,
+                'Content-Type':'application/json'
+            }
+        })
+        return Promise.resolve(data.data)
+    } catch (error) {
+        console.error(error)
+        return Promise.reject(error)
+    }
+
+}
+
+export const uploadToS3=async (fileObj,options)=>{
+    try{
+         const uploadUrl=await getUploadURL(fileObj,options)
+         const url=uploadUrl.uploadUrl
+    var formData = new FormData();
+    formData.append("image",fileObj);
+    const axiosS3=axios.create()
+    await axiosS3.put(url, fileObj)
+    console.log(uploadUrl.fileUrl)
+    return Promise.resolve(uploadUrl.fileUrl)
+ }catch(e){
+     console.log(e)
+     return Promise.reject(e)
+ }
+}
+
 
 

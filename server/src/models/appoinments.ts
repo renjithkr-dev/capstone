@@ -15,7 +15,7 @@ export interface AppointmentInterface{
     userId:string,
     readonly recordDate?:string
     appointmentStatus?:APPT_STATUS
-    attachmenturl?:string
+    attachmentUrl?:string
 }
 export interface ProviderInterface{
     addAppointment (appt:AppointmentInterface):Promise<AppointmentInterface>
@@ -34,7 +34,7 @@ export class AppointmentImpl implements AppointmentInterface{
     userId:string
     recordDate:string
     appointmentStatus:APPT_STATUS
-    attachmenturl:string
+    attachmentUrl:string
 
     constructor(appt:AppointmentInterface){
         this.appointmentId=uuid() || Math.random().toString(50).substr(2)
@@ -45,7 +45,7 @@ export class AppointmentImpl implements AppointmentInterface{
         this.userId=appt.userId
         this.recordDate=appt.recordDate || new Date().toUTCString()
         this.appointmentStatus=APPT_STATUS.PENDING
-        this.attachmenturl=appt.attachmenturl|| ""
+        this.attachmentUrl=appt.attachmentUrl|| ""
     }
 
     static mapToAppointmentJSON(appt:any){
@@ -58,7 +58,7 @@ export class AppointmentImpl implements AppointmentInterface{
             comments:appt.comments,
             recordDate:appt.recordDate,
             appointmentStatus:appt.status,
-            attachmenturl:appt.attachmentURL
+            attachmentUrl:appt.attachmentUrl
         }
         return apptJSON
     }

@@ -1,17 +1,21 @@
+import {useState as UseState} from 'react'
 export const StaffAppointmentItem=(props)=>{
-    let apptStatus="no data"
     const item=props.item
-    switch(props.item.appointmentStatus.toString()){
-        case "0":apptStatus="pending";break
-        case "1":apptStatus="approved";break
-        case "2":apptStatus='rejected'
+    let tmpStatus=""
+     switch(props.item.appointmentStatus.toString()){
+        case "0":tmpStatus=("pending");break
+        case "1":tmpStatus=("approved");break
+        case "2":tmpStatus=("rejected");break;
     }
-
+    const [apptStatus,setAppStatus]=UseState(tmpStatus)
+    
     const acceptAppointmentListener=()=>{
         props.statusUpdateAppointmentListener(item.appointmentId,'1')
+        setAppStatus("approved")
     }
     const rejectAppointmentListener=()=>{
         props.statusUpdateAppointmentListener(item.appointmentId,'2')
+        setAppStatus("rejected")
     }
     return(
         <div className='apptItem' >

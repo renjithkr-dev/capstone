@@ -20,6 +20,9 @@
      },
      "staffId": {
       "type": "string"
+   },
+   "attachmentUrl": {
+      "type": "string"
    }
     },
      

@@ -11,8 +11,18 @@ const xAWS=AWSXRay.captureAWS(AWS)
 const s3 = new xAWS.S3({ 'signatureVersion': 'v4' })
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  const key = `upload/${uuid()}`
-
+  const bodyObj=JSON.parse(event.body||"")
+  if(!bodyObj){
+    return {
+      statusCode: 400,
+      headers: {
+        "Access-Control-Allow-Origin": "http://localhost:3000",
+        'Access-Control-Allow-Credentials': true
+      },
+      body: JSON.stringify({ "error": 'no file sent'})
+    }
+  }
+  const key = `upload/${uuid()}-${bodyObj.fileName}`
   var params = { Bucket: process.env.BUCKET_NAME, Key: key, Expires: 300 };
   try {
     const url = s3.getSignedUrl('putObject', params)
@@ -23,7 +33,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
         "Access-Control-Allow-Origin": "http://localhost:3000",
         'Access-Control-Allow-Credentials': true
       },
-      body: JSON.stringify({ "uploadUrl": url })
+      body: JSON.stringify({ "uploadUrl": url, 'fileUrl':`https://${process.env.BUCKET_NAME}.s3.amazonaws.com/${key}` })
     }
   } catch (err) {
     logger.error(err)
@@ -33,7 +43,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
         "Access-Control-Allow-Origin": "http://localhost:3000",
         'Access-Control-Allow-Credentials': true
       },
-      body: JSON.stringify({ "uploadUrl": '' })
+      body: JSON.stringify({ "uploadUrl": ''})
     }
   }
 }

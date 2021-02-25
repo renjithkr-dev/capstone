@@ -17,7 +17,8 @@ export const AppointmentItem=(props)=>{
             <span className='apptItem-time'>Appointment Time : {item.appointmentTime}</span> 
             <br/><span className='apptItem-staffid'>Staff Name : {props.staffName}</span> <br/>
             <span className='apptItem-comments'>Comments : {item.comments}</span><br/>
-            <button type="button" className='btn btn-danger' onClick={deleteAppointmentListener} disabled={props.status.deleteRunning}>Delete</button>
+            {item.attachmentUrl ? <a href={item.attachmentUrl} download>Click here to download atachment</a>:""}
+            <br/><button type="button" className='btn btn-danger' onClick={deleteAppointmentListener} disabled={props.status.deleteRunning}>Delete</button>
         </div>
     )
 }

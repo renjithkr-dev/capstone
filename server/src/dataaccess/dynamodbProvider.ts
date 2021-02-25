@@ -19,7 +19,8 @@ export class DynamoDBProvider implements ProviderInterface {
                 comments: appt.comments,
                 staffId: appt.staffId,
                 appointmentStatus:appt.appointmentStatus,
-                recordDate: appt.recordDate
+                recordDate: appt.recordDate,
+                attachmentUrl:appt.attachmentUrl
             }
         }
         try {
@@ -58,7 +59,8 @@ export class DynamoDBProvider implements ProviderInterface {
                     appointmentId:appt.appointmentId,
                     comments:appt.comments,
                     recordDate:appt.recordDate,
-                    appointmentStatus:appt.appointmentStatus
+                    appointmentStatus:appt.appointmentStatus,
+                    attachmentUrl:appt.attachmentUrl
                 }
                 data.push(user)
             });
@@ -96,7 +98,8 @@ export class DynamoDBProvider implements ProviderInterface {
                     appointmentId:appt.appointmentId,
                     comments:appt.comments,
                     recordDate:appt.recordDate,
-                    appointmentStatus:appt.appointmentStatus
+                    appointmentStatus:appt.appointmentStatus,
+                    attachmentUrl:appt.attachmentUrl
                 }
                 data.push(user)
             });
