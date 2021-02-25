@@ -34,10 +34,15 @@ Status= 1 for **approve**_
 
 5. Get appointments
 _By providing a date, you can get appointments for an user or staff for a particular date. By ignoring date, we can retrieve all future appointments_
+
   GET - https://reumgbrqwd.execute-api.us-east-1.amazonaws.com/dev/appointments/user
+
   GET - https://reumgbrqwd.execute-api.us-east-1.amazonaws.com/dev/appointments/user/{apptDate}
+
   GET - https://reumgbrqwd.execute-api.us-east-1.amazonaws.com/dev/appointments/staff
+
   GET - https://reumgbrqwd.execute-api.us-east-1.amazonaws.com/dev/appointments/staff/{apptDate}
+
 Response sample
 `[{"appointmentDate":"2021-02-25","appointmentTime":"11:30","staffId":"602f443866abcd006913e2b9","userId":"602e927e90e442007038d238","appointmentId":"4329024d-4836-43da-983f-c560c15f7214","comments":"test","recordDate":"Wed, 24 Feb 2021 12:42:52 GMT","appointmentStatus":0}]`
 
