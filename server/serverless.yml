@@ -18,6 +18,7 @@ provider:
     USER_APPTS_INDEX: appts-user-${self:provider.stage}
     AUTH0_SECRET_ID: AUTH0_SECRETS_SET
     AUTH0_SECRET_FIELD: AUTH0_SECRET_UDAGRAM
+    BUCKET_NAME: ${self:provider.stage}-capstone
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -167,8 +168,33 @@ functions:
           cors: 
             headers: "*"
           authorizer: Auth
+  GenerateUploadUrl:
+    handler: dist/src/lambda/generateUploadUrl.handler
+    iamRoleStatements:
+      - Effect: 'Allow'
+        Action: 
+          - S3:PutObject
+          - S3:GetObject
+        Resource: arn:aws:s3:::${self:provider.environment.BUCKET_NAME}/*
+    events:
+      - http:
+          method: post
+          path: appointments/getUploadUrl
+          cors:
+            headers: '*'
+          authorizer: Auth
 resources:
   Resources:
+    GatewayResponseDefault4XX:
+      Type: AWS::ApiGateway::GatewayResponse
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+          gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: ApiGatewayRestApi
     AppointmentsTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -238,6 +264,28 @@ resources:
         Name: ${self:provider.environment.AUTH0_SECRET_ID}
         Description: Auth0 secret
         KmsKeyId: !Ref KMSKey
+    BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties: 
+        Bucket: !Ref UploadBucket
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - S3:GetObject
+              Resource: arn:aws:s3:::${self:provider.environment.BUCKET_NAME}/*
+              Principal: '*'
+    UploadBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.environment.BUCKET_NAME}
+        CorsConfiguration:
+          CorsRules:
+            - AllowedHeaders: ['*']
+              AllowedMethods: [GET, PUT, POST]
+              AllowedOrigins: ['http://localhost:3000']
+              MaxAge: '3600'
 #    NewResource:
 #      Type: AWS::S3::Bucket
 #      Properties:

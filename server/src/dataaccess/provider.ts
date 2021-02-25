@@ -44,4 +44,5 @@ export class AppointmentFactory{
         const resp=await this.dbProvider.deleteAppointment(apptId,userId)
         return Promise.resolve(resp)
     }
+    
 }

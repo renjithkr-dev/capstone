@@ -140,5 +140,25 @@ export class DynamoDBProvider implements ProviderInterface {
             return Promise.reject({ "error": e })
         }
     }
+    UpdateURLForAppointment=async (apptId:string,userId:string,url:any)=>{
+        const params:any = {
+            TableName:process.env.APPTS_TABLE,
+            Key:{
+                "userId":userId,
+                "appointmentId":apptId
+            },
+            UpdateExpression:'set attachmentUrl=:aurl',
+            ExpressionAttributeValues:{
+                ":aurl":url
+            },
+            ReturnValues:"ALL_NEW"
+        };
+        try{
+            const uItem=await docClient.update(params).promise();
+            return Promise.resolve(uItem)
+            }catch(e){
+              return Promise.reject(e)
+            }
+    }
 }
 
