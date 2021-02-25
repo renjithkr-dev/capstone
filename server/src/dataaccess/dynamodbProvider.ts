@@ -1,9 +1,11 @@
 import * as AWS from "aws-sdk"
+import * as AWSXray from "aws-xray-sdk-core"
 import { QueryOutput } from "aws-sdk/clients/dynamodb";
 import { AppointmentImpl, AppointmentInterface, APPT_STATUS, ProviderInterface } from "../models/appoinments";
 
 AWS.config.update({region:'us-east-1'})
-var docClient = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
+const XrayClient=AWSXray.captureAWS(AWS)
+var docClient = new XrayClient.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
 export class DynamoDBProvider implements ProviderInterface {
     addAppointment = async (appt: AppointmentInterface): Promise<AppointmentInterface> => {
         console.log(process.env.APPTS_TABLE); 
